@@ -8,6 +8,9 @@ module.exports = merge(common, {
   devtool: "inline-source-map",
   devServer: {
     contentBase: "./dist",
+    headers:{
+    	"Access-Control-Allow-Origin":"*"
+    }
   },
   plugins: [
     new webpack.DefinePlugin({
