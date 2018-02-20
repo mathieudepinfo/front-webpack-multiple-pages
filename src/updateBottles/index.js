@@ -1,10 +1,31 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 import $ from "jquery";
-console.log("AddBottles");
+console.log("UpdateBottles");
 
 
-$("#addBottleForm").submit((event)=>{
+function updateForm(){
+
+	$.ajax({
+		url:`http://localhost:3000/bottles/${sessionStorage.getItem("bottleId")}`,
+		method:"GET",
+		error:(request,status,error)=>{
+			console.log(error,status,request);
+		},
+		success:(data)=>{		
+			$("#brand").val(data.BRAND);
+			$("#volume").val(data.VOLUME);
+			$("#price").val((data.PRICE/100).toPrecision(3));
+			$("#quantity").val(data.NBR);	
+
+		}
+	});
+	
+}
+
+updateForm();
+
+$("#updateBottleForm").submit((event)=>{
 	console.log("form submit");
 
 	var _brand = $("#brand").val();
@@ -23,8 +44,8 @@ $("#addBottleForm").submit((event)=>{
 	console.log(_brand,_volume,_price,_number);
 
 	$.ajax({
-		url:"http://localhost:3000/bottles",
-		method:"POST",
+		url:`http://localhost:3000/bottles/${sessionStorage.getItem("bottleId")}`,
+		method:"PATCH",
 		data:_data,
 		beforeSend: function(request) {
     		request.setRequestHeader("x-access-token", token);
@@ -35,7 +56,8 @@ $("#addBottleForm").submit((event)=>{
 
 		},
 		success:(data)=>{		
-			console.log("bottle added");
+			console.log("bottle patched");
+			updateForm();
 
 		}
 	});

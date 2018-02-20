@@ -26,7 +26,7 @@ $.ajax({
 	                Actions
 	              </button>
 	              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-	                <a class="dropdown-item" href="#">Modifier</a>
+	                <a class="dropdown-item" onclick="location.href='http://localhost:8080/updateBottles.html';sessionStorage.setItem('bottleId',${data[bottleIndex].ID})">Modifier</a>
 	                <a class="dropdown-item" href="#">Supprimer</a>
 	              </div>
 	            </div>
