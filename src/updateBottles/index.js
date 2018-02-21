@@ -69,7 +69,7 @@ $("#connect").append(()=>{
 
 	console.log(sessionStorage);
 	if(sessionStorage.getItem("auth") === "true"){
-		return '<button  class="nav-link" onclick="sessionStorage.clear();location.reload()">Deconnexion <span class="sr-only">(current)</span></button>';
+		return '<a  class="nav-link" href="" onclick="sessionStorage.clear();location.reload() ">Deconnexion <span class="sr-only">(current)</span></a>';
 	}
 	return '<a class="nav-link" href="/index.html">Connexion <span class="sr-only">(current)</span></a>';
 

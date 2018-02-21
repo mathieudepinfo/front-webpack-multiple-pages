@@ -1,9 +1,33 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 import $ from "jquery";
+
 console.log("Bottles");
+$.holdReady( true );
+
+$( window ).ready(function() {
+	console.log("loaded");
+	$(".deleteButton").click((event)=>{
+
+		$.ajax({
+			url:"http://localhost:3000/bottles/"+event.target.id,
+			method:"DELETE",
+			beforeSend: (xhr)=>{
+	    		xhr.setRequestHeader ("x-access-token", sessionStorage.getItem("accessToken"));
+			},
+			error:(request,status,error)=>{
+				console.log(error,status,request);
+			},
+			success:(data)=>{		
+				location.reload();
+			}
+		});
+	});
+})
+
 
 $.ajax({
+
 	url:"http://localhost:3000/bottles",
 	method:"GET",
 	dataType:"json",
@@ -26,25 +50,47 @@ $.ajax({
 	                Actions
 	              </button>
 	              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-	                <a class="dropdown-item" onclick="location.href='http://localhost:8080/updateBottles.html';sessionStorage.setItem('bottleId',${data[bottleIndex].ID})">Modifier</a>
-	                <a class="dropdown-item" href="#">Supprimer</a>
+	                <a class="dropdown-item" onclick="sessionStorage.setItem('bottleId',${data[bottleIndex].ID})" href="/updateBottles.html">Modifier</a>
+	                <a class="dropdown-item deleteButton" id="${data[bottleIndex].ID}"" href="#">Supprimer</a>
 	              </div>
 	            </div>
 	          </td>
 	        </tr>`
-     
+     		
 			);
 		}
+		$.holdReady( false );
+		console.log('liste loaded');
 	}
 	
 })
 
 
+
+$(".deleteButton").click(()=>{
+	console.log(id);
+
+	$.ajax({
+		url:"http://localhost:3000/bottles/"+this.id,
+		method:"DELETE",
+		dataType:"json",
+		beforeSend: (xhr)=>{
+    		xhr.setRequestHeader ("x-access-token", sessionStorage.getItem("accessToken"));
+		},
+		error:(request,status,error)=>{
+			console.log(error,status,request);
+		},
+		success:(data)=>{		
+			location.reload();
+		}
+	});
+})
+
 $("#connect").append(()=>{
 
 	console.log(sessionStorage);
 	if(sessionStorage.getItem("auth") === "true"){
-		return '<button  class="nav-link" onclick="sessionStorage.clear();location.reload()">Deconnexion <span class="sr-only">(current)</span></button>';
+		return '<a  class="nav-link" href="" onclick="sessionStorage.clear();location.reload()">Deconnexion <span class="sr-only">(current)</span></a>';
 	}
 	return '<a class="nav-link" href="/index.html">Connexion <span class="sr-only">(current)</span></a>';
 

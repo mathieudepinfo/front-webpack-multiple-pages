@@ -34,7 +34,7 @@ $("#connexion-form").submit((event)=>{
 			sessionStorage.setItem("accessToken" ,data.token);
 			sessionStorage.setItem("auth" ,data.auth);
 			
-			window.location ="http://localhost:8080/bottles.html";
+			window.location.href ="/bottles.html";
 
 		}
 	});
